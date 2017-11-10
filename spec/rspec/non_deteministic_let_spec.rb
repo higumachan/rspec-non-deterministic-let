@@ -6,13 +6,33 @@ RSpec.describe RSpec::NonDeterministicLet do
   end
 
   context 'normal use' do
-    nd_let_context 'test' do
-      nd_let(:test) { 1 }
-      nd_let(:test) { 2 }
+    nd_let(:nadeko) { 1 }
+    nd_let(:nadeko) { 2 }
 
+    nd_let_context :nadeko do
       it 'test = 1 or 2' do
-        expect(test).to gte 1
-        expect(test).to lte 1
+        expect(nadeko).to be >= 1
+        expect(nadeko).to be <= 2
+      end
+      it 'test only 1 or 2' do
+        expect(nadeko).not_to be < 1
+        expect(nadeko).not_to be > 2
+      end
+    end
+  end
+
+  context 'with description' do
+    nd_let(:nadeko, 'nadeko = 1') { 1 }
+    nd_let(:nadeko, 'nadeko = 2') { 2 }
+
+    nd_let_context :nadeko do
+      it 'test = 1 or 2' do
+        expect(nadeko).to be >= 1
+        expect(nadeko).to be <= 2
+      end
+      it 'test only 1 or 2' do
+        expect(nadeko).not_to be < 1
+        expect(nadeko).not_to be > 2
       end
     end
   end
