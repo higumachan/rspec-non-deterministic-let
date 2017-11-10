@@ -26,7 +26,6 @@ module RSpec
           end
         end
       end
-      # TODO: impl
     end
   end
 end
