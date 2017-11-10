@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "rspec/non/deterministic/let"
+require "rspec/non_deterministic_let"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
