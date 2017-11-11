@@ -90,6 +90,8 @@ end
 
 I think that before one is more intuitive.
 
+`spec/rspec/examples_spec.rb` contain these examples.
+
 ### Description
 
 If you want to description with `nd_let` then you can set description using by second argument.
