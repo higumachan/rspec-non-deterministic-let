@@ -1,7 +1,6 @@
-# Rspec::Non::Deterministic::Let
+# Rspec::NonDeterministicLet
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rspec/non/deterministic/let`. To experiment with that code, run `bin/console` for an interactive prompt.
-
+The aim of this gem is easy and intuitive writing with multi precondition specs.
 
 ## Installation
 
@@ -21,7 +20,107 @@ Or install it yourself as:
 
 ## Usage
 
-Write usage instructions here
+### How to use your project
+
+#### Rails
+
+Please add spec/rails_helper.rb
+
+```ruby
+require 'rspec/actioncheck'
+```
+
+#### Other
+
+Please add spec/spec_helper.rb
+
+```ruby
+require 'rspec/actioncheck'
+```
+
+### Simple case
+
+You can write that code in spec.
+
+```ruby
+RSpec.describe 'Some test'do
+  nd_let(:some_state) { 1 }
+  nd_let(:some_state) { 2 }
+
+  nd_let_context :some_state do
+    it 'some_state = 1 or 2' do
+      expect(some_state).to be >= 1
+      expect(some_state).to be <= 2
+    end
+    it 'some_state only 1 or 2' do
+      expect(some_state).not_to be < 1
+      expect(some_state).not_to be > 2
+    end
+  end
+end
+```
+
+It is same as this code. (but context message is different)
+
+```ruby
+RSpec.describe 'Some test without this gem'do
+
+  shared_examples 'some_state is 1 or 2' do
+    it 'some_state = 1 or 2' do
+      expect(some_state).to be >= 1
+      expect(some_state).to be <= 2
+    end
+    it 'some_state only 1 or 2' do
+      expect(some_state).not_to be < 1
+      expect(some_state).not_to be > 2
+    end
+  end
+
+  context 'some_state = 1' do
+    let(:some_state) { 1 }
+    include_examples 'some_state is 1 or 2' 
+  end
+
+  context 'some_state = 2' do
+    let(:some_state) { 1 }
+    include_examples 'some_state is 1 or 2' 
+  end
+end
+```
+
+I think that before one is more intuitive.
+
+`spec/rspec/examples_spec.rb` contain these examples.
+
+### Description
+
+If you want to description with `nd_let` then you can set description using by second argument.
+
+```
+RSpec.describe 'Some test use by description' do
+  nd_let(:some_state, 'some_state = 1') { 1 }
+  nd_let(:some_state, 'some_state = 2') { 2 }
+
+  nd_let_context :some_state do
+    it 'some_state = 1 or 2' do
+      expect(some_state).to be >= 1
+      expect(some_state).to be <= 2
+    end
+    it 'some_state only 1 or 2' do
+      expect(some_state).not_to be < 1
+      expect(some_state).not_to be > 2
+    end
+  end
+end
+```
+
+This example is exactry same as `Some test without this gem` case.
+
+
+### nd_let!
+
+You can use `nd_let!`.
+The effect of 'nd_let!' is same as `let!` for `let`
 
 ## Development
 
