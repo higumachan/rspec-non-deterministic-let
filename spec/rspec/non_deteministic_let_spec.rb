@@ -10,11 +10,11 @@ RSpec.describe RSpec::NonDeterministicLet do
     nd_let(:nadeko) { 2 }
 
     nd_let_context :nadeko do
-      it 'test = 1 or 2' do
+      it 'nadeko = 1 or 2' do
         expect(nadeko).to be >= 1
         expect(nadeko).to be <= 2
       end
-      it 'test only 1 or 2' do
+      it 'nadeko only 1 or 2' do
         expect(nadeko).not_to be < 1
         expect(nadeko).not_to be > 2
       end
@@ -26,13 +26,76 @@ RSpec.describe RSpec::NonDeterministicLet do
     nd_let(:nadeko, 'nadeko = 2') { 2 }
 
     nd_let_context :nadeko do
-      it 'test = 1 or 2' do
+      it 'nadeko = 1 or 2' do
         expect(nadeko).to be >= 1
         expect(nadeko).to be <= 2
       end
-      it 'test only 1 or 2' do
+      it 'nadeko only 1 or 2' do
         expect(nadeko).not_to be < 1
         expect(nadeko).not_to be > 2
+      end
+    end
+  end
+
+  context 'stateful block' do
+    context 'with nd_let!' do
+      nd_let!(:nadeko) do 
+        @rikka = 100
+        1 
+      end
+      nd_let!(:nadeko) do 
+        @rikka = 101
+        2
+      end
+      nd_let_context :nadeko do
+        it 'nadeko = 1 or 2' do
+          expect(nadeko).to be >= 1
+          expect(nadeko).to be <= 2
+        end
+        it 'nadeko only 1 or 2' do
+          expect(nadeko).not_to be < 1
+          expect(nadeko).not_to be > 2
+        end
+        it '@rikka = 100 or 101' do
+          expect(@rikka).to be >= 100
+          expect(@rikka).to be <= 101
+        end
+        it '@rikka only 100 or 101' do
+          expect(@rikka).not_to be < 100
+          expect(@rikka).not_to be > 101
+        end
+      end
+    end
+    context 'with nd_let' do
+      before do
+        @rikka = nil
+      end
+      nd_let(:nadeko) do 
+        @rikka = 100
+        1 
+      end
+      nd_let(:nadeko) do 
+        @rikka = 101
+        2
+      end
+      nd_let_context :nadeko do
+        it 'nadeko = 1 or 2' do
+          expect(nadeko).to be >= 1
+          expect(nadeko).to be <= 2
+        end
+        it 'nadeko only 1 or 2' do
+          expect(nadeko).not_to be < 1
+          expect(nadeko).not_to be > 2
+        end
+        it '@rikka be nil' do
+          expect(@rikka).to be_nil
+        end
+
+        it '@rikka = 100 or 101 when after access nadeko' do
+          nadeko
+          expect(@rikka).to be >= 100
+          expect(@rikka).to be <= 101
+        end
       end
     end
   end
