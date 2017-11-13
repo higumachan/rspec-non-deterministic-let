@@ -27,7 +27,7 @@ Or install it yourself as:
 Please add spec/rails_helper.rb
 
 ```ruby
-require 'rspec/actioncheck'
+require 'rspec/non_deterministic_ret'
 ```
 
 #### Other
@@ -35,7 +35,7 @@ require 'rspec/actioncheck'
 Please add spec/spec_helper.rb
 
 ```ruby
-require 'rspec/actioncheck'
+require 'rspec/non_deterministic_ret'
 ```
 
 ### Simple case
