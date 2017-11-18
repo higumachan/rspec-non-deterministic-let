@@ -27,7 +27,7 @@ Or install it yourself as:
 Please add spec/rails_helper.rb
 
 ```ruby
-require 'rspec/actioncheck'
+require 'rspec/non_deterministic_ret'
 ```
 
 #### Other
@@ -35,7 +35,7 @@ require 'rspec/actioncheck'
 Please add spec/spec_helper.rb
 
 ```ruby
-require 'rspec/actioncheck'
+require 'rspec/non_deterministic_ret'
 ```
 
 ### Simple case
@@ -82,7 +82,7 @@ RSpec.describe 'Some test without this gem'do
   end
 
   context 'some_state = 2' do
-    let(:some_state) { 1 }
+    let(:some_state) { 2 }
     include_examples 'some_state is 1 or 2' 
   end
 end
@@ -96,7 +96,7 @@ I think that before one is more intuitive.
 
 If you want to description with `nd_let` then you can set description using by second argument.
 
-```
+```ruby
 RSpec.describe 'Some test use by description' do
   nd_let(:some_state, 'some_state = 1') { 1 }
   nd_let(:some_state, 'some_state = 2') { 2 }

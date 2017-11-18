@@ -36,7 +36,7 @@ RSpec.describe 'Some test without this gem'do
   end
 
   context 'some_state = 2' do
-    let(:some_state) { 1 }
+    let(:some_state) { 2 }
     include_examples 'some_state is 1 or 2' 
   end
 end
