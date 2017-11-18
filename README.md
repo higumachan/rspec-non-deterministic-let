@@ -96,7 +96,7 @@ I think that before one is more intuitive.
 
 If you want to description with `nd_let` then you can set description using by second argument.
 
-```
+```ruby
 RSpec.describe 'Some test use by description' do
   nd_let(:some_state, 'some_state = 1') { 1 }
   nd_let(:some_state, 'some_state = 2') { 2 }
