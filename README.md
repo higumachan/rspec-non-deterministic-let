@@ -122,6 +122,73 @@ This example is exactry same as `Some test without this gem` case.
 You can use `nd_let!`.
 The effect of 'nd_let!' is same as `let!` for `let`
 
+### Multi variable context
+
+If you want to write under case
+
+```ruby
+RSpec.describe 'Direct multi variable context' do
+  nd_let(:some_state1, 'some_state1 = 1') { 1 }
+  nd_let(:some_state1, 'some_state1 = 2') { 2 }
+  nd_let(:some_state2, 'some_state2 = 3') { 3 }
+  nd_let(:some_state2, 'some_state2 = 4') { 4 }
+
+  nd_let_context :some_state1 do
+    nd_let_context :some_state2 do
+      it 'some_state1 = 1 or 2' do
+        expect(some_state1).to be >= 1
+        expect(some_state1).to be <= 2 end
+      it 'some_state1 only 1 or 2' do
+        expect(some_state1).not_to be < 1
+        expect(some_state1).not_to be > 2
+      end
+
+      it 'some_state2 = 3 or 4' do
+        expect(some_state2).to be >= 3
+        expect(some_state2).to be <= 4
+      end
+      it 'some_state2 only 3 or 4' do
+        expect(some_state2).not_to be < 3
+        expect(some_state2).not_to be > 4
+      end
+    end
+  end
+end
+```
+
+You can use that code.
+
+
+```ruby
+RSpec.describe 'multi variable context' do
+  nd_let(:some_state1, 'some_state1 = 1') { 1 }
+  nd_let(:some_state1, 'some_state1 = 2') { 2 }
+  nd_let(:some_state2, 'some_state2 = 3') { 3 }
+  nd_let(:some_state2, 'some_state2 = 4') { 4 }
+
+  nd_let_context :some_state1, :some_state2 do
+    it 'some_state1 = 1 or 2' do
+      expect(some_state1).to be >= 1
+      expect(some_state1).to be <= 2
+    end
+    it 'some_state1 only 1 or 2' do
+      expect(some_state1).not_to be < 1
+      expect(some_state1).not_to be > 2
+    end
+
+    it 'some_state2 = 3 or 4' do
+      expect(some_state2).to be >= 3
+      expect(some_state2).to be <= 4
+    end
+    it 'some_state2 only 3 or 4' do
+      expect(some_state2).not_to be < 3
+      expect(some_state2).not_to be > 4
+    end
+  end
+end
+```
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
