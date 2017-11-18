@@ -12,6 +12,7 @@ module RSpec
               else
                 let(nd_let_name, &let_options[:block])
               end
+              # HACK: create nest using by recursive call.
               if nd_let_context(*args, &example_group_block) == :end 
                 self.module_exec(&example_group_block)
               end
