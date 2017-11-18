@@ -99,4 +99,31 @@ RSpec.describe RSpec::NonDeterministicLet do
       end
     end
   end
+
+  context 'multi variable nd_let_context' do
+    nd_let(:nadeko, 'nadeko = 1') { 1 }
+    nd_let(:nadeko, 'nadeko = 2') { 2 }
+    nd_let(:rikka, 'rikka = 3') { 3 }
+    nd_let(:rikka, 'rikka = 4') { 4 }
+
+    nd_let_context :nadeko, :rikka do
+      it 'nadeko = 1 or 2' do
+        expect(nadeko).to be >= 1
+        expect(nadeko).to be <= 2
+      end
+      it 'nadeko only 1 or 2' do
+        expect(nadeko).not_to be < 1
+        expect(nadeko).not_to be > 2
+      end
+
+      it 'rikka = 3 or 4' do
+        expect(rikka).to be >= 3
+        expect(rikka).to be <= 4
+      end
+      it 'rikka only 1 or 2' do
+        expect(rikka).not_to be < 3
+        expect(rikka).not_to be > 4
+      end
+    end
+  end
 end
