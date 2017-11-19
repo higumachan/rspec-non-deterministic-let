@@ -3,8 +3,19 @@ module RSpec
     module Helpers
       module ClassMethods
         def nd_let_context(*args, &example_group_block)
-          nd_let_name = args.shift
-          return :end unless nd_let_name.is_a?(Symbol)
+          __nd_let_context(
+            args.take_while{|x| x.is_a?(Symbol)},
+            *args.drop_while{|x| x.is_a?(Symbol)},
+            &example_group_block
+          )
+        end
+
+        def __nd_let_context(nd_let_names, *args, &example_group_block)
+          if nd_let_names.empty?
+            self.module_exec(&example_group_block)
+            return
+          end
+          nd_let_name = nd_let_names.first
           send(__nd_let_state_name(nd_let_name)).each do |let_options|
             context(let_options[:description], *args) do
               if let_options[:is_exclamation]
@@ -12,13 +23,9 @@ module RSpec
               else
                 let(nd_let_name, &let_options[:block])
               end
-              # HACK: create nest using by recursive call.
-              if nd_let_context(*args, &example_group_block) == :end 
-                self.module_exec(&example_group_block)
-              end
+              __nd_let_context(nd_let_names.drop(1), *args, &example_group_block)
             end
           end
-          return nil
         end
 
         def nd_let(nd_let_name, description=nil, &let_block)
