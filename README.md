@@ -27,7 +27,7 @@ Or install it yourself as:
 Please add spec/rails_helper.rb
 
 ```ruby
-require 'rspec/non_deterministic_ret'
+require 'rspec/non_deterministic_let'
 ```
 
 #### Other
@@ -35,7 +35,7 @@ require 'rspec/non_deterministic_ret'
 Please add spec/spec_helper.rb
 
 ```ruby
-require 'rspec/non_deterministic_ret'
+require 'rspec/non_deterministic_let'
 ```
 
 ### Simple case
