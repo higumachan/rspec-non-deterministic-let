@@ -122,6 +122,53 @@ This example is exactry same as `Some test without this gem` case.
 You can use `nd_let!`.
 The effect of 'nd_let!' is same as `let!` for `let`
 
+
+```ruby
+RSpec.describe 'Some test'do
+  nd_let!(:some_state) { 1 }
+  nd_let!(:some_state) { 2 }
+
+  nd_let_context :some_state do
+    it 'some_state = 1 or 2' do
+      expect(some_state).to be >= 1
+      expect(some_state).to be <= 2
+    end
+    it 'some_state only 1 or 2' do
+      expect(some_state).not_to be < 1
+      expect(some_state).not_to be > 2
+    end
+  end
+end
+```
+
+It is same as this code. (but context message is different)
+
+```ruby
+RSpec.describe 'Some test without this gem'do
+
+  shared_examples 'some_state is 1 or 2' do
+    it 'some_state = 1 or 2' do
+      expect(some_state).to be >= 1
+      expect(some_state).to be <= 2
+    end
+    it 'some_state only 1 or 2' do
+      expect(some_state).not_to be < 1
+      expect(some_state).not_to be > 2
+    end
+  end
+
+  context 'some_state = 1' do
+    let!(:some_state) { 1 }
+    include_examples 'some_state is 1 or 2' 
+  end
+
+  context 'some_state = 2' do
+    let!(:some_state) { 2 }
+    include_examples 'some_state is 1 or 2' 
+  end
+end
+```
+
 ### Multi variable context
 
 If you want to write under case
